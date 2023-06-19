@@ -1,3 +1,4 @@
+"use client"
 import React,{useEffect,useState} from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
@@ -6,13 +7,13 @@ import { usePathname,useRouter } from 'next/navigation'
 
 const PromptCard = ({post,handelTagClick,handleEdit,handleDelete}) => {
   const [copy,setCopy]=useState("")
+  const {data:session}=useSession()
+  const pathname=usePathname()
 
   const handleCopy=()=>{
     setCopy(post?.prompt);
     navigator.clipboard.writeText(post.prompt)
     setTimeout(()=>{setCopy(""),5000})
-    console.log("click")
-
   }
   return (
     <div className='prompt_card'>
@@ -35,6 +36,16 @@ const PromptCard = ({post,handelTagClick,handleEdit,handleDelete}) => {
       <p className='font-inter text-sm blue_gradient cursor-pointer'
       onClick={()=>handelTagClick && handelTagClick(post?.tag)}
       >{post?.tag}</p>
+      {session?.user.id === post.creator._id && pathname==='/profile' && (
+        <div className='mt-5 flex-center gap-4 border-t border-gray-100 pt-3'>
+          <p className='font-inter text-sm green_gradient cursor-pointer' onClick={handleEdit}>
+            Edit
+          </p>
+          <p className='font-inter text-sm orange_gradient cursor-pointer' onClick={handleDelete}>
+            Delete
+          </p>
+        </div>
+      )}
     </div>
   )
 }

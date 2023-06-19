@@ -13,7 +13,7 @@ const Profile = ({name,description,data,handleEdit,handleDelete}) => {
                 <PromptCard
                 key={Math.random()}
                 post={post}
-                handleEdit={()=>handleEdit && handleEdit}
+                handleEdit={()=>handleEdit && handleEdit(post)}
                 handleDelete={()=>handleDelete && handleDelete(post)}
                 />
             ))}
